@@ -1,4 +1,4 @@
-package com.claytoneduard.listastarefas;
+package com.claytoneduard.listastarefas.activity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.claytoneduard.listastarefas.R;
 import com.claytoneduard.listastarefas.databinding.FragmentSecondBinding;
 
 public class SecondFragment extends Fragment {

@@ -1,4 +1,4 @@
-package com.claytoneduard.listastarefas;
+package com.claytoneduard.listastarefas.activity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.claytoneduard.listastarefas.R;
 import com.claytoneduard.listastarefas.databinding.FragmentFirstBinding;
 
 public class FirstFragment extends Fragment {
@@ -29,13 +30,13 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+      /*  binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
-        });
+        });*/
     }
 
     @Override
