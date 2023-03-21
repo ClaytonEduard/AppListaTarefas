@@ -3,8 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.claytoneduard.listastarefas.activity.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/itemSalvar"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Salvar"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_salvar_branco_24dp"
+        />
+
+    <item
+        android:id="@+id/itemEditar"
+        android:orderInCategory="200"
+        android:title="Editar"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/itemConfiguracao"
+        android:orderInCategory="300"
+        android:title="Configurações"
+        app:showAsAction="never" />
+
 </menu>
