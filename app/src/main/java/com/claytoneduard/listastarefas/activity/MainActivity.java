@@ -1,5 +1,6 @@
 package com.claytoneduard.listastarefas.activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.claytoneduard.listastarefas.adapter.TarefaAdapter;
 import com.claytoneduard.listastarefas.databinding.ActivityMainBinding;
+import com.claytoneduard.listastarefas.helper.DbHelper;
 import com.claytoneduard.listastarefas.helper.RecyclerItemClickListener;
 import com.claytoneduard.listastarefas.model.Tarefa;
 
@@ -57,29 +59,33 @@ public class MainActivity extends AppCompatActivity {
         // configurar recycler
         recyclerView = findViewById(R.id.recyclerView);
 
+        // chamando a class DBHelper
+        DbHelper dbHelper = new DbHelper(this.getApplicationContext());
+
+        ContentValues cv = new ContentValues();// define itens tendo a aparencia de um ARRAY
+        cv.put("nome", "Teste");
+
+        dbHelper.getWritableDatabase().insert("tarefas", null, cv); // escreve no banco de dados
+        dbHelper.getReadableDatabase(); //  le os dados do bando de dados
+
+
         // adcionar evento click
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(
-                        getApplicationContext(),
-                        recyclerView,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                Log.i("Clique", "OnItemClick");
-                            }
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Log.i("Clique", "OnItemClick");
+            }
 
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-                                Log.i("Clique", "OnLongItemClick");
-                            }
+            @Override
+            public void onLongItemClick(View view, int position) {
+                Log.i("Clique", "OnLongItemClick");
+            }
 
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                            }
-                        }
-                )
-        );
+            }
+        }));
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.itemSalvar:
                 Toast.makeText(this, "Item Salvar", Toast.LENGTH_SHORT).show();
                 break;
@@ -146,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 }
