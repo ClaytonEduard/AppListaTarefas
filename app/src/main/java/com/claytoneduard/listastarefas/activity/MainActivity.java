@@ -59,15 +59,6 @@ public class MainActivity extends AppCompatActivity {
         // configurar recycler
         recyclerView = findViewById(R.id.recyclerView);
 
-        // chamando a class DBHelper
-        DbHelper dbHelper = new DbHelper(this.getApplicationContext());
-
-        ContentValues cv = new ContentValues();// define itens tendo a aparencia de um ARRAY
-        cv.put("nome", "Teste");
-
-        dbHelper.getWritableDatabase().insert("tarefas", null, cv); // escreve no banco de dados
-        dbHelper.getReadableDatabase(); //  le os dados do bando de dados
-
 
         // adcionar evento click
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
