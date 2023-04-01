@@ -1,8 +1,10 @@
 package com.claytoneduard.listastarefas.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +18,24 @@ import com.google.android.material.textfield.TextInputEditText;
 public class AdicionarTarefaActivity extends AppCompatActivity {
 
     private TextInputEditText editTarefa;
+    private Tarefa tarefaAtual;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_tarefa);
         editTarefa = findViewById(R.id.txtTarefa);
+
+        // Recuperar a tarefa, caso seja edição
+        tarefaAtual = (Tarefa) getIntent().getSerializableExtra("tarefaSelecionada");
+
+        //Configurar tarefa na caixa de texto
+        if (tarefaAtual != null) {
+            editTarefa.setText(tarefaAtual.getNomeTarefa());
+        }
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,16 +49,37 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.itemSalvar:
                 TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
-
                 String nomeTarefa = editTarefa.getText().toString();
 
-                if(!nomeTarefa.isEmpty()){
-                    Tarefa tarefa = new Tarefa();
-                    tarefa.setNomeTarefa(nomeTarefa);
+                // Edição
+                if (tarefaAtual != null) {
+                    if (!nomeTarefa.isEmpty()) {
+                        Tarefa tarefa = new Tarefa();
+                        tarefa.setId(tarefaAtual.getId());
+                        tarefa.setNomeTarefa(nomeTarefa); // nome recuperado da edição
 
-                    tarefaDAO.salvar(tarefa);
-                    // metodo para fechar a activiry
-                    finish();
+                        // atualizar no banco de dados
+                        if(tarefaDAO.atualizar(tarefa)){
+                            Toast.makeText(this, "Tarefa ao atualizar tarefa!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }else{
+                            Toast.makeText(this, "Erro ao atualizar tarefa!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                } else {
+                    //Salvar
+                    if (!nomeTarefa.isEmpty()) {
+                        Tarefa tarefa = new Tarefa();
+                        tarefa.setNomeTarefa(nomeTarefa);
+                        if (tarefaDAO.salvar(tarefa)) {
+                            Toast.makeText(this, "Tarefa salva com suscesso!", Toast.LENGTH_SHORT).show();
+                            // metodo para fechar a activiry
+                            finish();
+                        } else {
+                            Toast.makeText(this, "Erro ao salvar tarefa!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
                 break;
         }
