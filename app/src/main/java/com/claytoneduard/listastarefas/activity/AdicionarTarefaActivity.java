@@ -60,7 +60,7 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 
                         // atualizar no banco de dados
                         if(tarefaDAO.atualizar(tarefa)){
-                            Toast.makeText(this, "Tarefa ao atualizar tarefa!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Tarefa atualizada com sucesso!", Toast.LENGTH_SHORT).show();
                             finish();
                         }else{
                             Toast.makeText(this, "Erro ao atualizar tarefa!", Toast.LENGTH_SHORT).show();

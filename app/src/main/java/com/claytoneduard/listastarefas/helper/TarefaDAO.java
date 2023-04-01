@@ -57,7 +57,17 @@ public class TarefaDAO implements iTarefaDAO {
 
     @Override
     public boolean deletar(Tarefa tarefa) {
-        return false;
+
+        try {
+            String[] args = {tarefa.getId().toString()};
+            escreveDb.delete(DbHelper.TABELA_TAREFAS, "id=?", args);
+            Log.i("INFO", "Tarefa removida com suscesso!");
+        } catch (Exception e) {
+            Log.e("INFO", "Erro ao remover tarefa " + e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     @Override

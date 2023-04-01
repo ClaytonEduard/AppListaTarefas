@@ -1,11 +1,13 @@
 package com.claytoneduard.listastarefas.activity;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.claytoneduard.listastarefas.R;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TarefaAdapter tarefaAdapter;
     private List<Tarefa> listaTarefas = new ArrayList<>();
+    private Tarefa tarefaSelecionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,37 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onLongItemClick(View view, int position) {
-                Log.i("Clique", "OnLongItemClick");
+
+                tarefaSelecionada = listaTarefas.get(position);
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                // titulo e mensagem
+                dialog.setTitle("Confirmar exclusão");
+                dialog.setMessage("Deseja excluir a tarefa: " + tarefaSelecionada.getNomeTarefa() + " ?");
+
+                // botoes do dialog
+                dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+                        if (tarefaDAO.deletar(tarefaSelecionada)) {
+                            carregarListaTarefas();
+
+                            Toast.makeText(getApplicationContext(),
+                                    "Sucesso ao excluir tarefa!",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Erro ao excluir tarefa!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                dialog.setNegativeButton("Não", null);
+
+                dialog.create();// cria o dialog
+                dialog.show(); // exibe o dialog
             }
 
             @Override
