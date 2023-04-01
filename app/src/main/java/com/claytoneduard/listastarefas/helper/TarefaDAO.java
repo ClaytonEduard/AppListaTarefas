@@ -1,12 +1,15 @@
 package com.claytoneduard.listastarefas.helper;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.claytoneduard.listastarefas.model.Tarefa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TarefaDAO implements iTarefaDAO {
@@ -48,6 +51,26 @@ public class TarefaDAO implements iTarefaDAO {
 
     @Override
     public List<Tarefa> listar() {
-        return null;
+        List<Tarefa> tarefas = new ArrayList<>();
+
+        String sql = "SELECT * FROM " + DbHelper.TABELA_TAREFAS + " ;";
+        Cursor c = leDb.rawQuery(sql, null);
+
+        while (c.moveToNext()) {
+
+            Tarefa tarefa = new Tarefa();
+
+            @SuppressLint("Range") Long id = c.getLong(c.getColumnIndex("id"));
+            @SuppressLint("Range") String nomeTarefa = c.getString(c.getColumnIndex("nome"));
+
+            tarefa.setId(id);
+            tarefa.setNomeTarefa(nomeTarefa);
+
+            tarefas.add(tarefa);
+
+        }
+
+        return tarefas;
+
     }
 }

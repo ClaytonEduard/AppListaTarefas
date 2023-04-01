@@ -23,6 +23,7 @@ import com.claytoneduard.listastarefas.adapter.TarefaAdapter;
 import com.claytoneduard.listastarefas.databinding.ActivityMainBinding;
 import com.claytoneduard.listastarefas.helper.DbHelper;
 import com.claytoneduard.listastarefas.helper.RecyclerItemClickListener;
+import com.claytoneduard.listastarefas.helper.TarefaDAO;
 import com.claytoneduard.listastarefas.model.Tarefa;
 
 import android.view.Menu;
@@ -90,13 +91,8 @@ public class MainActivity extends AppCompatActivity {
     //metodo de carregar listas
     public void carregarListaTarefas() {
         //listar tarefas
-        Tarefa tarefa1 = new Tarefa();
-        tarefa1.setNomeTarefa("Fazer compras");
-        listaTarefas.add(tarefa1);
-
-        Tarefa tarefa2 = new Tarefa();
-        tarefa2.setNomeTarefa("Ir a Farmacia");
-        listaTarefas.add(tarefa2);
+        TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+        listaTarefas = tarefaDAO.listar();
 
         // configurar um adapter
         tarefaAdapter = new TarefaAdapter(listaTarefas);
